@@ -17,63 +17,82 @@ The setup includes:
 ---
 
 ## 1. System Overview
+The lab setup includes two robot arms, two grippers, one main computers, and network hardware.
 
-The lab setup includes two robot arms, two main computers, robot-side network hardware, and grippers.
+### Robot Hardware
+- **2 Franka Emika Panda Robots** with the [FCI](https://frankarobotics.github.io/docs/doc/libfranka/docs/getting_started.html) installed.
+    - Robot system version: 4.2.X (FER pandas)
+    - Robot / Gripper Server version: 5 / 3
+- **2 [Tesollo Dg-3F](https://en.tesollo.com/dg-3f-b/) Grippers**. 1 mounted on each Panda
 
-### Main computers
+### Computers
 
-- **Computer 1**: desktop workstation / left workstation
-- **Computer 2**: right-side laptop used to open the Franka Desk web interface in a browser
+- **COMPUTER 1**: Ubuntu Computer (Ubuntu 20.04, 22.04 or 24.04) with [Realtime Kernel Patch Kernel Patch](https://frankarobotics.github.io/docs/doc/libfranka/docs/real_time_kernel.html?highlight=real+time+kernel+patch) installed. 
+- **COMPUTER 2** [Optional]: Ubuntu computer (22.04 or 24.04 recommended) with a Nvidia GPU (GeForce RTX 40 or 50 Series recommended).
 
-### Network subnet
+COMPUTER 2 is required if you want to run anything on a GPU since the kernel patch messes with the Nvidia GPU drivers. Use ROS to send commands between COMPUTER 2 and COMPUTER 1.
 
-The system uses the following subnet:
+### Network
+The robots, grippers, and computers all need to be connected to the same ethernet switch via ethernet cables
+and **must share the same subnet**.
+
+The system currently uses following subnet:
 
 ```text
 192.168.4.*
 ```
 
-Both computers and robot devices must be on this same subnet.
+For each device, the first three octets of the IP address must stay the same (`192.168.4`) and the last number must be unique. Below is the current network setup. These IP's are what we'll use throughout the rest of the instructions.
 
-The first three parts of the IP address must stay the same:
+```mermaid
+flowchart LR
+    C1[COMPUTER 1<br/>Laptop w/ kernel patch<br/>IP: 192.168.4.4]
+    C2[COMPUTER 2<br/>Desktop workstation<br/>IP: 192.168.4.9]
+    
 
-```text
-192.168.4
+    SW[Robot switch<br/>Same subnet: 192.168.4.*]
+
+   
+
+    L[Left Robot Arm<br/>Franka: 192.168.4.2<br/>Tesollo: 192.168.4.8]
+    R[Right Robot Arm<br/>Franka: 192.168.4.3<br/>Tesollo: 192.168.4.7]
+
+    C1 <--> SW
+    C2 <--> SW
+
+    SW <--> L
+    SW <--> R
 ```
-
-The last number can be different, but it must be unique and must match the corresponding values used in the ROS / Docker scripts.
 
 ---
 
 ## 2. Power On the Robot System
 
-### 2.1 Turn on the main switches
+### 2.1 Turn on the Pandas
 
-There are two black switches on the table legs. Turn on both switches.
+There are two black switches on the two black Panda control boxes under the table. Turn on both switches.
 
-### 2.2 Turn on the floor boxes
-
-There are two transparent boxes on the floor. Turn on both boxes.
-
-### 2.3 If the robot does not respond
-
-If the power is on but the robot does not react:
-
+If the power is on but the robot lights don't start turning on:
 1. Turn the system off.
 2. Wait for 15 minutes.
 3. Turn the system on again.
 
-### 2.4 Check the robot light
+### 2.2 Turn on the Tesollo
 
-If the robot light is yellow, the robot is ready to use the interface.
+There are two transparent boxes on the floor. Turn on switches on both boxes to power on the Tesollos
 
-After the interface setup is completed correctly, the robot light should become blue.
+
+
+### 2.3 Check the robot light
+The Pandas will flash yellow when starting up. Wait for the lights to turn a solid yellow, which indicate the Pandas are ready to use and their web interface can be accessed.
+
+The Tesollos will display a solid blue light when they are powered on correctly.
 
 ---
 
-## 3. Computer 2 Network Setup
+## 3. Computer 1 Network Setup
 
-Computer 2 is the laptop used to open the robot web interface.
+Computer 1 is the laptop used to open the Panda web interface.
 
 ### 3.1 Open the network settings
 
@@ -122,9 +141,9 @@ The last number does not have to be exactly `4`, but if it is changed, the corre
 
 ---
 
-## 4. Computer 1 Network Setup
+## 4. Computer 2 Network Setup
 
-Computer 1 is the desktop workstation.
+Computer 2 is the desktop workstation.
 
 ### 4.1 Open the network settings
 
@@ -182,9 +201,9 @@ The last number can be changed if needed, but if it is changed, the correspondin
 
 ---
 
-## 5. Check ROS / Docker Script Files on Computer 1
+## 5. Check ROS / Docker Script Files on Computer 2
 
-On Computer 1, open the repository in VS Code.
+On Computer 2, open the repository in VS Code.
 
 Repository root:
 
@@ -254,9 +273,9 @@ Check this line carefully:
 export ROS_STATIC_PEERS=192.168.4.9
 ```
 
-The address `192.168.4.9` corresponds to Computer 1, the desktop workstation.
+The address `192.168.4.9` corresponds to Computer 2, the desktop workstation.
 
-If the IP address of Computer 1 changes, this value must be updated.
+If the IP address of Computer 2 changes, this value must be updated.
 
 ---
 
@@ -303,9 +322,9 @@ Check this line carefully:
 export ROS_STATIC_PEERS=192.168.4.4
 ```
 
-The address `192.168.4.4` corresponds to Computer 2, the browser / interface laptop.
+The address `192.168.4.4` corresponds to Computer 1, the browser / interface laptop.
 
-If the IP address of Computer 2 changes, this value must be updated.
+If the IP address of Computer 1 changes, this value must be updated.
 
 ---
 
@@ -316,12 +335,12 @@ The most important thing is to make sure the IP addresses in the network setting
 ### Current mapping
 
 ```text
-Computer 1 / desktop:
+Computer 2 / desktop:
 Network address: 192.168.4.9
 Related script: scripts/docker_control.sh
 Related line: export ROS_STATIC_PEERS=192.168.4.9
 
-Computer 2 / browser laptop:
+Computer 1 / browser laptop:
 Network address: 192.168.4.4
 Related script: scripts/docker_isaac.sh
 Related line: export ROS_STATIC_PEERS=192.168.4.4
@@ -491,33 +510,9 @@ Tesollo: 192.168.4.7
 
 ---
 
-## 16. Network Relationship Diagram
 
-```mermaid
-flowchart LR
 
-    C1[Computer 1<br/>Desktop workstation<br/>IP: 192.168.4.9]
-    C2[Computer 2<br/>Browser / interface laptop<br/>IP: 192.168.4.4]
-
-    SW[Robot switch<br/>Same subnet: 192.168.4.*]
-
-    BOX[Under-table robot-side boxes]
-
-    L[Left Robot Arm<br/>Franka: 192.168.4.2<br/>Tesollo: 192.168.4.8]
-    R[Right Robot Arm<br/>Franka: 192.168.4.3<br/>Tesollo: 192.168.4.7]
-
-    C1 --> SW
-    C2 --> SW
-
-    SW --> BOX
-
-    BOX --> L
-    BOX --> R
-```
-
----
-
-## 17. Quick Checklist
+## 16. Quick Checklist
 
 ### Power
 
@@ -528,10 +523,10 @@ flowchart LR
 
 ### Network
 
-- [ ] Computer 1 is on the `192.168.4.*` subnet.
+- [ ] Computer 1  is on the `192.168.4.*` subnet.
 - [ ] Computer 2 is on the `192.168.4.*` subnet.
-- [ ] Computer 1 uses `192.168.4.9` unless the setup has been changed.
-- [ ] Computer 2 uses `192.168.4.4` unless the setup has been changed.
+- [ ] Computer 2 uses `192.168.4.9` unless the setup has been changed.
+- [ ] Computer 1 uses `192.168.4.4` unless the setup has been changed.
 - [ ] Netmask is `255.255.255.0`.
 - [ ] Gateway is blank.
 - [ ] DNS is automatic.
@@ -571,7 +566,7 @@ Turn the system off, wait 15 minutes, and turn it on again.
 Check:
 
 ```text
-Computer 2 network address
+Computer 1 network address
 Robot subnet
 Ethernet connection
 Robot power
