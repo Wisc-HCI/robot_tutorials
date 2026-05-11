@@ -1,5 +1,7 @@
 FROM python:3.12-slim
 
+ARG ROBOT_STACK_DIR=/workspace/libs/robot-stack
+
 # System packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -83,16 +85,15 @@ WORKDIR /workspace
 
 ############## Local Python and C++ Installs ##############
 COPY ./libs /workspace/libs
-COPY ./app /workspace/app
 
-WORKDIR /workspace/libs/robot_motion
+WORKDIR ${ROBOT_STACK_DIR}/robot_motion
 RUN rm -rf build/ && \
     cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && \
     cmake --build build -j && \
     cmake --install build && \
     ldconfig
 
-WORKDIR /workspace/libs/robot_motion_interface
+WORKDIR ${ROBOT_STACK_DIR}/robot_motion_interface
 RUN rm -rf build/ && \
     cmake -S . -B build -DCMAKE_BUILD_TYPE=Release  && \
     cmake --build build -j && \
@@ -101,8 +102,7 @@ RUN rm -rf build/ && \
 
 WORKDIR /workspace
 
-RUN uv pip install -e libs/robot_motion && \
-    uv pip install -e libs/robot_motion_interface && \
-    uv pip install -e libs/sensor_interface/sensor_interface_py
+RUN uv pip install -e ${ROBOT_STACK_DIR}/robot_motion && \
+    uv pip install -e ${ROBOT_STACK_DIR}/robot_motion_interface
 
 CMD ["bash"]

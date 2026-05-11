@@ -1,0 +1,18 @@
+services:
+  bimanual-base:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.bimanual
+    image: bimanual-base
+    container_name: bimanual-base
+    # Note: `privileged` is not the safest, but it is an easy way to give real-time privileges to the container.
+    privileged: true
+    network_mode: host
+    environment:
+        - DISPLAY=${DISPLAY}
+    volumes:
+      - ../libs:/workspace/libs
+      # Xhost forwarding
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    stdin_open: true
+    tty: true 
