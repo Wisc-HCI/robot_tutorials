@@ -10,9 +10,9 @@ The setup includes:
 - opening the Franka Desk web interface
 - unlocking the robot arms
 - activating FCI for code control
-- checking end-effector settings when needed
 - understanding emergency stop buttons
-- understanding the network relationship between computers, robot arms, switches, and grippers
+- checking end-effector settings when needed
+
 
 ---
 
@@ -92,15 +92,11 @@ The Tesollos will display a solid blue light when they are powered on correctly.
 
 ## 3. Computer 1 Network Setup
 
-Computer 1 is the laptop used to open the Panda web interface.
+Computer 1 is the laptop with the real-time kernel patch used to open the Panda web interface.
 
 ### 3.1 Open the network settings
 
-Go to:
-
-```text
-Settings → Network → Wired → gear icon → IPv4
-```
+Go to `Settings → Network → Wired → gear icon → IPv4`
 
 ### 3.2 Required IPv4 settings
 
