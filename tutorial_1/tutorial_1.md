@@ -17,11 +17,20 @@ git submodule init
 git submodule update
 ```
 
-Next, build and start the docker container. This will take ~6 minutes and ~6.3GB of space.
+Next, build docker container. This will take ~6 minutes and ~6.3GB of space.
 ```bash
 docker compose -f docker/compose.bimanual.yaml build
-docker compose -f docker/compose.bimanual.yaml run --rm --service-ports bimanual-base
 ```
+
+After that, start the docker container using **one** of the following:
+```bash
+# Mac/Windows/Ubuntu
+docker compose -f docker/compose.bimanual.yaml run --rm --service-ports bimanual-base
+
+# Ubuntu computer with real-time kernel patch to run code on robot
+docker compose -f docker/compose.bimanual.real.yaml run --rm --service-ports bimanual-base
+```
+
 
 ## 3. Test your setup in sim
 Run the following to test your system in Mujoco. Then go to [http://localhost:8765](http://localhost:8765).

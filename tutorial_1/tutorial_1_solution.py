@@ -27,7 +27,7 @@ def configure_interface(interface_str:str) -> Interface:
         interface = MujocoBrowserInterface.from_yaml(config_path)
         
     elif (interface_str == "real"):
-        config_path = config_dir / "bimanual_interface.yaml"
+        config_path = config_dir / "bimanual_arm_config.yaml"
         interface = BimanualInterface.from_yaml(config_path)
 
     else:
@@ -80,13 +80,13 @@ def main(interface_str:str):
     move_right_arm(robot_interface, np.array([0.1, 0.0, 1.3, 0.0, 1.0, 0.0, 0.0]))
 
     # 2. Move down to cube
-    move_right_arm(robot_interface, np.array([0.1, 0.0,  0.95, 0.0, 1.0, 0.0, 0.0]))
+    move_right_arm(robot_interface, np.array([0.1, 0.0,  1.0, 0.0, 1.0, 0.0, 0.0]))
 
     # 4. Move cube Left
-    move_right_arm(robot_interface, np.array([-0.1, 0.0, 0.95, 0.0, 1.0, 0.0, 0.0]))
+    move_right_arm(robot_interface, np.array([-0.1, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]))
 
     # 5. Move Up
-    move_right_arm(robot_interface, np.array([-0.1, 0.0, 1.2, 0.0, 1.0, 0.0, 0.0]))
+    move_right_arm(robot_interface, np.array([0.0, 0.0, 1.2, 0.0, 1.0, 0.0, 0.0]))
     
 
 

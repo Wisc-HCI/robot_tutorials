@@ -27,7 +27,7 @@ def configure_interface(interface_str:str) -> Interface:
         interface = MujocoBrowserInterface.from_yaml(config_path)
         
     elif (interface_str == "real"):
-        config_path = config_dir / "bimanual_interface.yaml"
+        config_path = config_dir / "bimanual_arm_config.yaml"
         interface = BimanualInterface.from_yaml(config_path)
 
     else:

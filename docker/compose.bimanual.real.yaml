@@ -1,0 +1,22 @@
+services:
+  bimanual-base:
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.bimanual
+    image: bimanual-base
+    container_name: bimanual-base
+    # Note: `privileged` is not the safest, but it is an easy way to give real-time privileges to the container.
+    privileged: true
+    # For real robot use on Linux, replace ports with: network_mode: host
+    network_mode: host
+    environment:
+        - DISPLAY=${DISPLAY}
+        - MUJOCO_GL=osmesa 
+    volumes:
+      - ../libs:/workspace/libs
+      - ../tutorial_1:/workspace/tutorial_1
+      # Xhost forwarding
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    stdin_open: true
+    tty: true 
