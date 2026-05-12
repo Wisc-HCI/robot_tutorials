@@ -25,6 +25,8 @@ The lab setup includes two robot arms, two grippers, one main computers, and net
     - Robot / Gripper Server version: 5 / 3
 - **2 [Tesollo Dg-3F](https://en.tesollo.com/dg-3f-b/) Grippers**. 1 mounted on each Panda
 
+![Hardware](../assets/hardware.png)
+
 ### Computers
 
 - **COMPUTER 1**: Ubuntu Computer (Ubuntu 20.04, 22.04 or 24.04) with [Realtime Kernel Patch Kernel Patch](https://frankarobotics.github.io/docs/doc/libfranka/docs/real_time_kernel.html?highlight=real+time+kernel+patch) installed. 
@@ -32,8 +34,11 @@ The lab setup includes two robot arms, two grippers, one main computers, and net
 
 COMPUTER 2 is required if you want to run anything on a GPU since the kernel patch messes with the Nvidia GPU drivers. Use ROS to send commands between COMPUTER 2 and COMPUTER 1.
 
+
+![Computers](../assets/computers.png)
+
 ### Network
-The robots, grippers, and computers all need to be connected to the same ethernet switch via ethernet cables
+The robots, grippers, and computers all need to be connected to the same ethernet network switch via ethernet cables
 and **must share the same subnet**.
 
 The system currently uses following subnet:
@@ -283,6 +288,7 @@ When a white emergency stop button is pressed:
 Robot light becomes white
 ```
 
+![e-stops](../assets/e-stops.png)
 
 
 ## 10. Expected Robot Status
