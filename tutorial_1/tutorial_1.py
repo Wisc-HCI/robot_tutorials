@@ -38,7 +38,7 @@ def configure_interface(interface_str:str) -> Interface:
 
 def main(interface_str:str):
     """
-    Fill in the TODO's to try to pick up the block. Once you do it in sim,
+    Fill in the TODO's to try to move the block. Once you do it in sim,
     try running it on the real robot system.
 
     Args:

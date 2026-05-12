@@ -34,7 +34,7 @@ If you see the robot "dancing" in your browser, as shown below, your system is s
 <img src="../assets/tutorial-1-system-check.gif" width="500">
 
 ## 4. Write your own code
-Your task to to make the robot pick up the block. Fill in [tutorial_1.py](tutorial_1.py) to complete the task. In the file are examples of functions you can use. To run the program, you can run:
+Your task to to make the robot move the block. Fill in [tutorial_1.py](tutorial_1.py) to complete the task. In the file are examples of functions you can use. To run the program, you can run:
 ```bash
 python3 tutorial_1/tutorial_1.py --interface sim
 ```
