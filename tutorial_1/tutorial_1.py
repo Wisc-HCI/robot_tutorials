@@ -87,11 +87,11 @@ def main(interface_str:str):
     #     x_list=[np.array([-0.3, 0.2, 1.3, 1.0, 0.0, 0.0, 0.0])],
     #     ee_frames=["left_delto_offset_link"], blocking=True)
 
-    """Generate a smooth Cartesian trajectory to a goal pose at a set velocity"""
+    """Generate a smooth straight Cartesian trajectory to a goal pose at a set velocity"""
     # goal_poses = [np.array([0.2, 0.2, 1.2, 0.0, 1.0, 0.0, 0.0])]
     # trajectories, frames = robot_interface.cartesian_trajectory(
-    #     goal_poses=goal_poses, dt=0.01, velocity=0.1, angular_velocity=0.5, 
-    #     acceleration=0.5, ee_frames=["right_delto_offset_link"])
+    #     goal_poses=goal_poses, dt=0.01, velocity=0.005, angular_velocity=0.005, 
+    #     acceleration=0.005, ee_frames=["right_delto_offset_link"])
     # for waypoint in trajectories[0]:
     #     robot_interface.set_cartesian_pose(x_list=[waypoint], 
     #         ee_frames=["right_delto_offset_link"], blocking=True)
