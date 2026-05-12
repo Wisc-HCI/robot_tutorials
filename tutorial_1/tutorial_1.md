@@ -20,7 +20,7 @@ git submodule update
 Next, build and start the docker container. This will take ~6 minutes and ~6.3GB of space.
 ```bash
 docker compose -f docker/compose.bimanual.yaml build
-docker compose -f docker/compose.bimanual.yaml run --rm bimanual-base
+docker compose -f docker/compose.bimanual.yaml run --rm --service-ports bimanual-base
 ```
 
 ## 3. Test your setup in sim

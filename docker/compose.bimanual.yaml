@@ -8,9 +8,14 @@ services:
     container_name: bimanual-base
     # Note: `privileged` is not the safest, but it is an easy way to give real-time privileges to the container.
     privileged: true
-    network_mode: host
+    # For real robot use on Linux, replace ports with: network_mode: host
+    # network_mode: host
+    ports:
+      - "7000:7000"
+      - "7001:7001"
     environment:
         - DISPLAY=${DISPLAY}
+        - MUJOCO_GL=osmesa 
     volumes:
       - ../libs:/workspace/libs
       - ../tutorial_1:/workspace/tutorial_1
