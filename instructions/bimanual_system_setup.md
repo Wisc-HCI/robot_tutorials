@@ -229,7 +229,7 @@ In both desk interfaces, in the right-side control menu, find the **Joints** sec
 
 Click the unlock button on the right side of the Joints row.
 
-![Unlock joints](./assets/unlock-joints.jpg?raw=true)
+![Unlock joints](../assets/unlock-joints.jpg?raw=true)
 
 This unlocks the robot joints and allows the robot to be moved or controlled.
 
@@ -241,7 +241,7 @@ The lock control is one of the most commonly used buttons in the interface.
 
 For both desk interfaces, click  **Activate FCI** when the robot needs to be controlled through code.
 
-![Activate FCI](./assets/activate-fci.jpg?raw=true)
+![Activate FCI](../assets/activate-fci.jpg?raw=true)
 
 After FCI is active, the interface will show:
 
@@ -322,7 +322,7 @@ Settings → End-Effector
 
 The mass value is especially important when the hardware configuration changes.
 
-![End-effector mass setting](./assets/end-effector-mass.jpg?raw=true)
+![End-effector mass setting](../assets/end-effector-mass.jpg?raw=true)
 
 In the current setup, the end-effector page includes a mass setting such as:
 
