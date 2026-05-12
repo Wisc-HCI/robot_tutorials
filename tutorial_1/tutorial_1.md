@@ -33,6 +33,17 @@ If you see the robot "dancing" in your browser, as shown below, your system is s
 
 <img src="../assets/tutorial-1-system-check.gif" width="500">
 
-## 4. Try writing code yourself
+## 4. Write your own code
+Your task to to make the robot pick up the block. Fill in [tutorial_1.py](tutorial_1.py) to complete the task. In the file are examples of functions you can use. To run the program, you can run:
+```bash
+python3 tutorial_1/tutorial_1.py --interface sim
+```
 
-TODO
+An example solution is at [tutorial_1_solution.py](tutorial_1_solution.py). 
+
+
+## 5. Run your code on the robot
+You can run the script you executed in sim (note: this has to be on the computer with the kernel patch... see Requirements section a).
+```bash
+python3 tutorial_1/tutorial_1.py --interface real
+```
