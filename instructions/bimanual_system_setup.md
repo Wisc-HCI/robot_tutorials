@@ -218,14 +218,14 @@ If you add more computers to the network, you will need to append the new IP add
 
 ## 6. Open the Franka Desk Interface
 
-The robot interface can be opened through the robot network URL. Open https://192.168.4.2/desk/ for the left panda and https://192.168.4.3/desk/ for right panda.
-These are also bookmarked on the laptop in Chrome (Right_Panda, Left_Panda).
+The robot interface can be opened in Chrome through the robot network URL (these don't open correctly in Firefox due to security rules). Open https://192.168.4.2/desk/ for the left panda and https://192.168.4.3/desk/ for right panda.
+These are also bookmarked on the laptop in Chrome (Right_Panda, Left_Panda). In chrome, if you see a `Your connection in not private` page, clicked `ADVANCED` and proceed anyway.
 
 
 
 ## 7. Unlock the Robot Joints
 
-In both desk interfaces, in the right-side control menu, find the **Joints** section.
+In both Franka desk interfaces, in the right-side control menu, find the **Joints** section.
 
 Click the unlock button on the right side of the Joints row.
 
@@ -239,7 +239,7 @@ The lock control is one of the most commonly used buttons in the interface.
 
 ## 8. Activate FCI for Code Control
 
-For both desk interfaces, click  **Activate FCI** when the robot needs to be controlled through code.
+For both Franka desk interfaces, click  **Activate FCI** when the robot needs to be controlled through code.
 
 ![Activate FCI](../assets/activate-fci.jpg?raw=true)
 
@@ -293,57 +293,12 @@ After the network, script, interface, and unlock settings are correct:
 Robot light: blue
 Robot status: ready or code-control ready
 ```
+**If the robot is blue, you are ready to start using code on the robot.**
 
-If the robot reports an error, check the robot status message in the interface or the error message in the terminal.
-
-One possible error is:
-
-```text
-Configured force thresholds reached
-```
-
-If this happens, stop and check whether the robot is blocked, touching something, or in an unsafe configuration. If this is the case, press both e-stops, move the robot to a safe configuration using the free-drive mode. To enter free-drive mode, press the 2 buttons on the panda grip by the end-effector ([this video](https://youtu.be/hCfn0mzHLyM?si=U2euvpFYJ82N3g0o) shows you how to do it). Then unlock the e-stops and run your script again.
+If the robot is not blue there is an issue. Check the robot status message in the interface or the error message in the terminal and see the `Troubleshooting` section to resolved the issue.
 
 
-If the errors don't go away, after this, try locking and unlocking the joints
-
-
-
-
-## 13. End-Effector Settings
-
-Sometimes the end-effector setting needs to be checked or updated.
-
-Go to:
-
-```text
-Settings → End-Effector
-```
-
-The mass value is especially important when the hardware configuration changes.
-
-![End-effector mass setting](../assets/end-effector-mass.jpg?raw=true)
-
-In the current setup, the end-effector page includes a mass setting such as:
-
-```text
-Mass: 0.994 kg
-```
-
-Only modify this setting when the end-effector or robot hardware configuration changes.
-
-This is especially important if:
-
-- a new robot is added
-- a new gripper is installed
-- the end-effector changes
-- the mass parameter needs to be updated
-
-Do not change the end-effector parameters unless you know the correct mechanical values.
-
----
-
-## 14. Quick Checklist
+## 11. Quick Checklist
 
 ### Power
 
@@ -375,15 +330,9 @@ Do not change the end-effector parameters unless you know the correct mechanical
 - [ ] Check robot status.
 - [ ] Confirm the robot light becomes blue.
 
-### End-effector
-
-- [ ] Check the end-effector setting only if the hardware configuration changes.
-- [ ] Verify mass value if a new gripper or end-effector is installed.
-- [ ] Do not modify mechanical parameters without the correct values.
-
 ---
 
-## 15. Troubleshooting
+## Troubleshooting
 
 ### Robot does not react after power on
 
@@ -401,6 +350,28 @@ Robot power
 Browser URL
 ```
 
+
+### Franka Desktop reports force threshold error or libfranka reports `motion aborted by reflex`
+
+The Pandas play it very safe with regards to joint limits and collisions. If you hit a joint limit or collide with something, the robot will stop and throw an error. 
+
+Franka Desktop errors include:
+* force threshold error
+
+Libfranka (code) errors include:
+* `libfranka: Move command aborted: motion aborted by reflex! ["cartesian_reflex"]`
+* `libfranka: Set Joint Impedance command rejected: command not possible in the current mode ("Reflex")!`
+
+
+To resolve the error, check whether the robot is blocked, touching something, or in an unsafe configuration. If this is the case, **press both e-stops** and move the robot to a safe configuration using the free-drive mode. To enter free-drive mode, press the 2 buttons on the panda grip by the end-effector ([this video](https://youtu.be/hCfn0mzHLyM?si=U2euvpFYJ82N3g0o) shows you how to do it). Then unlock the e-stops and run your script again. Sometimes just locking and unlocking the e-stops (without moving the robot) will also clear the error.
+
+If the errors don't go away after this, try locking and unlocking the joints in the Franka Desktop interface.
+
+
+### libfranka reports `Connection to FCI refused.`
+
+Make sure to enable FCI mode on both desk interfaces.
+
 ### ROS communication does not work
 
 Check:
@@ -408,8 +379,6 @@ Check:
 ```text
 Computer 1 IP address
 Computer 2 IP address
-ROS_STATIC_PEERS in docker_control.sh
-ROS_STATIC_PEERS in docker_isaac.sh
 ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
 ```
 
@@ -431,6 +400,40 @@ A white emergency stop button may be pressed.
 
 Rotate the corresponding white emergency stop button clockwise to release it.
 
-### Robot reports force threshold error
 
-Stop using the robot and check whether the arm or gripper is touching something, blocked, or in an unsafe pose.
+
+
+
+
+## End-Effector Settings
+
+If you swap out the end-effector, you need to update the settings.
+
+In the Franka Desk Interface, go to
+
+```text
+Settings → End-Effector
+```
+
+The mass value is especially important when the hardware configuration changes.
+
+![End-effector mass setting](../assets/end-effector-mass.jpg?raw=true)
+
+In the current setup, the end-effector page includes a mass setting such as:
+
+```text
+Mass: 0.994 kg
+```
+
+Only modify this setting when the end-effector or robot hardware configuration changes.
+
+This is especially important if:
+
+- a new robot is added
+- a new gripper is installed
+- the end-effector changes
+- the mass parameter needs to be updated
+
+Do not change the end-effector parameters unless you know the correct mechanical values.
+
+---
