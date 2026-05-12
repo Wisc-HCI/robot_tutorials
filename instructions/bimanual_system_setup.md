@@ -86,8 +86,6 @@ There are two transparent boxes on the floor. Turn on switches on both boxes to 
 ### 2.3 Check the robot light
 The Pandas will flash yellow when starting up. Wait for the lights to turn a solid yellow, which indicate the Pandas are ready to use and their web interface can be accessed.
 
-The Tesollos will display a solid blue light when they are powered on correctly.
-
 ---
 
 ## 3. Computer 1 Network Setup
@@ -119,7 +117,6 @@ Link-Local Only: not selected
 Disable: not selected
 ```
 
-### 3.3 Important note
 
 The example configuration uses:
 
@@ -133,7 +130,7 @@ The first three parts must stay the same:
 192.168.4
 ```
 
-The last number does not have to be exactly `4`, but if it is changed, the corresponding ROS / Docker script values must also be updated.
+The last number does not have to be exactly `4`, but if it is changed, the corresponding ROS environment values must also be updated.
 
 ---
 
@@ -179,8 +176,6 @@ Link-Local Only: not selected
 Disable: not selected
 ```
 
-### 4.3 Important note
-
 The example configuration uses:
 
 ```text
@@ -193,187 +188,62 @@ The first three parts must stay the same:
 192.168.4
 ```
 
-The last number can be changed if needed, but if it is changed, the corresponding ROS / Docker script values must also be updated.
+The last number can be changed if needed, but if it is changed, the corresponding ROS environment values must also be updated.
 
 ---
 
-## 5. Check ROS / Docker Script Files on Computer 2
+## 5. [OPTIONAL] Set ROS Environment Variables for Discovery
 
-On Computer 2, open the repository in VS Code.
+This is required if you are using ROS on multiple computers so that messages are sent properly between computers.
 
-Repository root:
-
-```text
-dexterity-interface
-```
-
-The relevant files are inside:
-
-```text
-scripts/
-```
-
-The important files are:
-
-```text
-scripts/docker_control.sh
-scripts/docker_isaac.sh
-```
-
-The main thing to check is whether the IP addresses in these files match the actual network settings of Computer 1 and Computer 2.
-
----
-
-## 6. `scripts/docker_control.sh`
-
-### 6.1 File location
-
-```text
-scripts/docker_control.sh
-```
-
-### 6.2 Purpose
-
-This script is for the control / ros-base side.
-
-### 6.3 Content
-
-```bash
-#!/bin/bash
-
-# Run inside the ros-base container.
-# Builds ROS packages
-set -e
-
-export ROS_STATIC_PEERS=192.168.4.9
-export ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
-
-cd /workspace/libs/robot_motion_interface/ros
-colcon build --cmake-clean-cache --symlink-install
-
-cd /workspace/libs/primitives/ros
-colcon build --cmake-clean-cache --symlink-install
-
-cd /workspace
-source libs/robot_motion_interface/ros/install/setup.bash
-source libs/primitives/ros/install/setup.bash
-
-exec bash
-```
-
-### 6.4 What to check
-
-Check this line carefully:
-
+On COMPUTER 1, to set the following variables:
 ```bash
 export ROS_STATIC_PEERS=192.168.4.9
-```
-
-The address `192.168.4.9` corresponds to Computer 2, the desktop workstation.
-
-If the IP address of Computer 2 changes, this value must be updated.
-
----
-
-## 7. `scripts/docker_isaac.sh`
-
-### 7.1 File location
-
-```text
-scripts/docker_isaac.sh
-```
-
-### 7.2 Purpose
-
-This script is for the isaac-base container.
-
-### 7.3 Content
-
-```bash
-#!/bin/bash
-
-# Run inside the isaac-base container (Terminal 1).
-# Builds ROS packages.
-
-export ROS_STATIC_PEERS=192.168.4.4
 export ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
-
-cd /workspace/libs/robot_motion_interface/ros
-colcon build --cmake-clean-cache --symlink-install
-
-cd /workspace/libs/primitives/ros
-colcon build --cmake-clean-cache --symlink-install
-
-cd /workspace
-
-source libs/robot_motion_interface/ros/install/setup.bash
-source libs/primitives/ros/install/setup.bash
 ```
 
-### 7.4 What to check
-
-Check this line carefully:
+The address `192.168.4.9` corresponds to COMPUTER 2, the desktop workstation. If the IP address of COMPUTER 2 changes, this value must be updated.
 
 ```bash
 export ROS_STATIC_PEERS=192.168.4.4
+export ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
 ```
+The address `192.168.4.4` corresponds to Computer 1, the browser / interface laptop. If the IP address of Computer 1 changes, this value must be updated.
 
-The address `192.168.4.4` corresponds to Computer 1, the browser / interface laptop.
 
-If the IP address of Computer 1 changes, this value must be updated.
+If you add more computers to the network, you will need to append the new IP addresses to ROS_STATIC_PEERS as shown [here](https://docs.ros.org/en/jazzy/Tutorials/Advanced/Improved-Dynamic-Discovery.html)
 
 ---
 
-## 8. Important IP Consistency Check
 
-The most important thing is to make sure the IP addresses in the network settings and the script files are consistent.
+## 6. Open the Franka Desk Interface
 
-### Current mapping
+The robot interface can be opened through the robot network URL. Open https://192.168.4.2/desk/ for the left panda and https://192.168.4.3/desk/ for right panda.
+These are also bookmarked on the laptop in Chrome (Right_Panda, Left_Panda).
 
-```text
-Computer 2 / desktop:
-Network address: 192.168.4.9
-Related script: scripts/docker_control.sh
-Related line: export ROS_STATIC_PEERS=192.168.4.9
 
-Computer 1 / browser laptop:
-Network address: 192.168.4.4
-Related script: scripts/docker_isaac.sh
-Related line: export ROS_STATIC_PEERS=192.168.4.4
-```
 
-If one of the computer IP addresses changes, update the corresponding script file.
+## 7. Unlock the Robot Joints
 
----
+In both desk interfaces, in the right-side control menu, find the **Joints** section.
 
-## 9. Open the Franka Desk Interface
+Click the unlock button on the right side of the Joints row.
 
-The robot interface can be opened through the robot network URL.
+![Unlock joints](./assets/unlock-joints.jpg?raw=true)
 
-Example:
+This unlocks the robot joints and allows the robot to be moved or controlled.
 
-```text
-https://192.168.4.3/desk/
-```
-
-There are also browser bookmarks for the robot interfaces, so in normal use you can open the interface directly from the saved shortcut.
-
-Common bookmarks include:
-
-```text
-Right_Panda
-Left_Panda
-```
+The lock control is one of the most commonly used buttons in the interface.
 
 ---
 
-## 10. Activate FCI for Code Control
+## 8. Activate FCI for Code Control
 
-Use **Activate FCI** when the robot needs to be controlled through code.
+For both desk interfaces, click  **Activate FCI** when the robot needs to be controlled through code.
 
 ![Activate FCI](./assets/activate-fci.jpg?raw=true)
 
-After FCI is active, the interface may show:
+After FCI is active, the interface will show:
 
 ```text
 FCI is active
@@ -386,21 +256,61 @@ If you need to manually use Desk again, deactivate FCI first.
 
 ---
 
-## 11. Unlock the Robot Joints
+## 9. Unlock E-stops
 
-In the right-side control menu, find the **Joints** section.
+There are two kinds of emergency stop buttons for each robot (4 in total). All e-stops need to be released to run code on the robot (you will see yellow line if the estops are released). To release both kinds of e-stops,
+```text
+Rotate the button clockwise
+```
 
-Click the unlock button on the right side of the Joints row.
+**Yellow emergency stop button**
 
-![Unlock joints](./assets/unlock-joints.jpg?raw=true)
+The yellow emergency stop button is on the floor.
 
-This unlocks the robot joints and allows the robot to be moved or controlled.
+It shuts down power and controls both robot arms together.
 
-The lock control is one of the most commonly used buttons in the interface.
+This is usually not used unless necessary.
 
----
+**White emergency stop buttons**
 
-## 12. End-Effector Settings
+There are two white emergency stop buttons on the floor.
+
+Each one controls one robot arm individually.
+
+When a white emergency stop button is pressed:
+
+```text
+Robot light becomes white
+```
+
+
+
+## 10. Expected Robot Status
+
+After the network, script, interface, and unlock settings are correct:
+
+```text
+Robot light: blue
+Robot status: ready or code-control ready
+```
+
+If the robot reports an error, check the robot status message in the interface or the error message in the terminal.
+
+One possible error is:
+
+```text
+Configured force thresholds reached
+```
+
+If this happens, stop and check whether the robot is blocked, touching something, or in an unsafe configuration. If this is the case, press both e-stops, move the robot to a safe configuration using the free-drive mode. To enter free-drive mode, press the 2 buttons on the panda grip by the end-effector ([this video](https://youtu.be/hCfn0mzHLyM?si=U2euvpFYJ82N3g0o) shows you how to do it). Then unlock the e-stops and run your script again.
+
+
+If the errors don't go away, after this, try locking and unlocking the joints
+
+
+
+
+## 13. End-Effector Settings
 
 Sometimes the end-effector setting needs to be checked or updated.
 
@@ -433,82 +343,7 @@ Do not change the end-effector parameters unless you know the correct mechanical
 
 ---
 
-## 13. Expected Robot Status
-
-After the network, script, interface, and unlock settings are correct:
-
-```text
-Robot light: blue
-Robot status: ready or code-control ready
-```
-
-If the robot reports an error, check the robot status message in the interface.
-
-One possible error is:
-
-```text
-Configured force thresholds reached
-```
-
-If this happens, stop and check whether the robot is blocked, touching something, or in an unsafe configuration.
-
----
-
-## 14. Emergency Stop Buttons
-
-There are two kinds of emergency stop buttons in the lab.
-
-### 14.1 Yellow emergency stop button
-
-The yellow emergency stop button is on the floor.
-
-It shuts down power and controls both robot arms together.
-
-This is usually not used unless necessary.
-
-### 14.2 White emergency stop buttons
-
-There are two white emergency stop buttons on the floor.
-
-Each one controls one robot arm individually.
-
-When a white emergency stop button is pressed:
-
-```text
-Robot light becomes white
-```
-
-To release it:
-
-```text
-Rotate the button clockwise
-```
-
----
-
-## 15. Corrected Robot IP Mapping
-
-The handwritten labels for left and right are swapped. Use the corrected mapping below.
-
-### Left robot arm
-
-```text
-Franka: 192.168.4.2
-Tesollo: 192.168.4.8
-```
-
-### Right robot arm
-
-```text
-Franka: 192.168.4.3
-Tesollo: 192.168.4.7
-```
-
----
-
-
-
-## 16. Quick Checklist
+## 14. Quick Checklist
 
 ### Power
 
@@ -528,10 +363,7 @@ Tesollo: 192.168.4.7
 - [ ] DNS is automatic.
 
 ### Scripts
-
-- [ ] Check `scripts/docker_control.sh`.
 - [ ] Confirm `ROS_STATIC_PEERS=192.168.4.9`.
-- [ ] Check `scripts/docker_isaac.sh`.
 - [ ] Confirm `ROS_STATIC_PEERS=192.168.4.4`.
 - [ ] Make sure script IP values match the computer network settings.
 
@@ -551,7 +383,7 @@ Tesollo: 192.168.4.7
 
 ---
 
-## 18. Troubleshooting
+## 15. Troubleshooting
 
 ### Robot does not react after power on
 
