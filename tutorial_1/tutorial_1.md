@@ -24,7 +24,7 @@ docker compose -f docker/compose.bimanual.yaml run --rm --service-ports bimanual
 ```
 
 ## 3. Test your setup in sim
-Run the following to test your system in Mujoco. Then go to [http://localhost:7000](http://localhost:7000).
+Run the following to test your system in Mujoco. Then go to [http://localhost:8765](http://localhost:8765).
 ```bash
 python3 -m  robot_motion_interface.examples.oscillating_ex --interface mujoco_browser
 ```

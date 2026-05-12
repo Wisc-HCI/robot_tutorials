@@ -11,8 +11,8 @@ services:
     # For real robot use on Linux, replace ports with: network_mode: host
     # network_mode: host
     ports:
-      - "7000:7000"
-      - "7001:7001"
+      - "8765:8765"
+      - "8766:8766"
     environment:
         - DISPLAY=${DISPLAY}
         - MUJOCO_GL=osmesa 
