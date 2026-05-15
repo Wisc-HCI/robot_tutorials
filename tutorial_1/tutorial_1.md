@@ -3,7 +3,9 @@
 ## 1. Requirements
 (a) If you are only running the simulation, you will need Docker Desktop or Docker Engine+Compose. Below are the instructions for each operating system:
 * [Mac Instructions](https://docs.docker.com/desktop/setup/install/mac-install/)
+    * If you are running into a `Illegal Instruction` error when running the scripts (common on M3 chip), you will need to disable `Use Rosetta for x86_64/amd64 emulation on Apple Silicon` in Docker Desktop `Settings > Virtual Machine Options`. Note: this will greatly slow down the simulation.
 * [Windows Instructions](https://docs.docker.com/desktop/setup/install/windows-install/)
+    * When pulling submodules, if you run into a `filename too long` error, run `git config --global core.longpaths true`.
 * Ubuntu Instructions: First, install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) (recommend using apt). Then [configure docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user). Finally, install [Docker Compose](https://docs.docker.com/compose/install/linux/#install-using-the-repository).
 
 (b) If you are running on the actual hardware, you will need additionally to setup your computer (`COMPUTER 1`) and the robots according to instructions in [instructions/bimanual_system_setup.md](../instructions/bimanual_system_setup.md). Note: this requires your computer be Ubuntu with a realtime kernel patch.
